@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>safe.png</file>
+        <file>green.jpg</file>
+        <file>red.jpg</file>
+        <file>analysis.png</file>
+        <file>report.png</file>
+    </qresource>
+</RCC>

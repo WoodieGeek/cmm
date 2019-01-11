@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>831</width>
+    <height>541</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>831</width>
+      <height>441</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>831</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>50</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>true</bool>
+   </attribute>
+   <addaction name="transactions"/>
+   <addaction name="expense"/>
+   <addaction name="income"/>
+   <addaction name="analysis"/>
+   <addaction name="report"/>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="transactions">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/safe.png</normaloff>:/safe.png</iconset>
+   </property>
+   <property name="text">
+    <string>Операции</string>
+   </property>
+  </action>
+  <action name="income">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/green.jpg</normaloff>:/green.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Доход</string>
+   </property>
+  </action>
+  <action name="expense">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/red.jpg</normaloff>:/red.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Расход</string>
+   </property>
+  </action>
+  <action name="analysis">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/analysis.png</normaloff>:/analysis.png</iconset>
+   </property>
+   <property name="text">
+    <string>Анализ</string>
+   </property>
+  </action>
+  <action name="report">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/report.png</normaloff>:/report.png</iconset>
+   </property>
+   <property name="text">
+    <string>Отчёт</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>
