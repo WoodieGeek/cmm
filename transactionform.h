@@ -8,6 +8,8 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QDebug>
+#include <QRegExpValidator>
+
 
 struct Transaction {
     long long Value;
@@ -21,7 +23,8 @@ class TransactionForm : public QObject
     Q_OBJECT
 public:
     TransactionForm(Transaction* transaction, QWidget* parentt = nullptr);
-    QDialog* getForm();
+    QDialog* GetForm();
+    bool GetClose();
     ~TransactionForm();
 public slots:
     void OkClicked();
@@ -32,6 +35,7 @@ private:
     QLineEdit* dataEdit;
     QLineEdit* descriptionEdit;
     QPushButton* ok;
+    bool Close = false;
 };
 
 #endif // TRANSACTIONFORM_H

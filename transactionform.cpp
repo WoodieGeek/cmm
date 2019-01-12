@@ -5,7 +5,9 @@ TransactionForm::TransactionForm(Transaction* transaction, QWidget* parent) : Tr
     Form = new QDialog(parent);
     Form->setModal(true);
     valueEdit = new QLineEdit(Form);
+    valueEdit->setValidator(new QRegExpValidator(QRegExp("[0-9].*")));
     dataEdit = new QLineEdit(Form);
+    dataEdit->setValidator(new QRegExpValidator(QRegExp("([0-9]{2})\\.([0-9]{2})\\.([0-9]{4})")));
     descriptionEdit = new QLineEdit(Form);
     QFormLayout *formLayout = new QFormLayout();
     formLayout->addRow("Сумма", valueEdit);
@@ -20,6 +22,7 @@ TransactionForm::TransactionForm(Transaction* transaction, QWidget* parent) : Tr
     hbox->addLayout(formLayout);
     hbox->addLayout(lay);
     Form->setLayout(hbox);
+    Form->setWindowTitle(" ");
     Form->show();
     QObject::connect(ok, SIGNAL(clicked()), this, SLOT(OkClicked()));
 }
@@ -29,12 +32,17 @@ void TransactionForm::OkClicked() {
         Transaction_->Data = dataEdit->text();
         Transaction_->Value = valueEdit->text().toInt();
         Transaction_->Description = descriptionEdit->text();
+        Close = true;
     }
     Form->close();
 }
 
-QDialog* TransactionForm::getForm() {
+QDialog* TransactionForm::GetForm() {
     return Form;
+}
+
+bool TransactionForm::GetClose() {
+    return Close;
 }
 
 TransactionForm::~TransactionForm() {
@@ -42,7 +50,6 @@ TransactionForm::~TransactionForm() {
     delete valueEdit;
     delete dataEdit;
     delete descriptionEdit;
-
 }
 
 

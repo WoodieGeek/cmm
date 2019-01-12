@@ -9,8 +9,16 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QObject>
+#include <QtGui>
+#include <QtCharts>
+#include <QtCharts/QChart>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QChartView>
+#include <QDateTime>
 
 #include "transactionform.h"
+
+using namespace QtCharts;
 
 namespace Ui {
 class MainWindow;
@@ -28,11 +36,14 @@ private:
     void PrepareTable();
     void CreateForm();
     void AddTransactions(int type);
+    void GetAllTransactions(QVector<QVector<QString>>& transactions);
+    qint64 Date2Utc(const QString& data);
 
 public slots:
     void ShowTransactions();
     void IncomeTransactions();
     void ExpenseTransactions();
+    void CreateReport();
 
 private:
     Ui::MainWindow *ui;
