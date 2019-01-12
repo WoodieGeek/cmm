@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Control My Money</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTableWidget" name="table">
@@ -52,7 +52,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="operations"/>
    <addaction name="transaction"/>

@@ -58,9 +58,16 @@ void MainWindow::AddTransactions() {
     form->GetForm()->exec();
     if (form->GetClose()) {
         QSqlQuery* query = new QSqlQuery(Db);
-        query->exec("INSERT INTO finance(value, type, data, description) VALUES(" +
-                    QString::number(transaction.Value) + ", '" + transaction.Type +
-                    "', '" +transaction.Data + "', '" + transaction.Description + "')" );
+        if (form->GetCredit()) {
+            query->exec("INSERT INTO arrears(value, object, type) VALUES(" +
+                        QString::number(transaction.Value) + ", '" + transaction.Object +
+                        "', '" +transaction.Type + "')" );
+        }
+        else {
+            query->exec("INSERT INTO finance(value, type, data, description) VALUES(" +
+                        QString::number(transaction.Value) + ", '" + transaction.Type +
+                        "', '" +transaction.Data + "', '" + transaction.Description + "')" );
+        }
     }
     delete form;
 }

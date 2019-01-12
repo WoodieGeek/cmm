@@ -15,6 +15,8 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QChartView>
 #include <QDateTime>
+#include <QTabWidget>
+#include <QFormLayout>
 
 #include "transactionform.h"
 
