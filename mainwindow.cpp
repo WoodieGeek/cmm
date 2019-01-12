@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!Db.open())
         qDebug() << "DataBase dont open";
     connect(ui->transactions, SIGNAL(triggered()), this, SLOT(ShowTransactions()));
+    connect(ui->income, SIGNAL(triggered()), this, SLOT(IncomeTransactions()));
+    connect(ui->expense, SIGNAL(triggered()), this, SLOT(ExpenseTransactions()));
 }
 
 MainWindow::~MainWindow()
@@ -53,5 +55,28 @@ void MainWindow::ShowTransactions() {
             }
         }
     }
+}
 
+void MainWindow::CreateForm() {
+}
+
+void MainWindow::AddTransactions(int type) {
+    Transaction transaction;
+    transaction.Type = type == 1 ? "+" : "-";
+    transaction.Description = " 11";
+    TransactionForm* form = new TransactionForm(&transaction, this);
+    form->getForm()->exec();
+    QSqlQuery* query = new QSqlQuery(Db);
+    query->exec("INSERT INTO finance(value, type, data, description) VALUES(" +
+                QString::number(transaction.Value) + ", '" + transaction.Type +
+                "', '" +transaction.Data + "', '" + transaction.Description + "')" );
+    delete form;
+}
+
+void MainWindow::IncomeTransactions() {
+    this->AddTransactions(1);
+}
+
+void MainWindow::ExpenseTransactions() {
+    this->AddTransactions(0);
 }
