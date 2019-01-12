@@ -9,6 +9,7 @@
 #include <QFormLayout>
 #include <QDebug>
 #include <QRegExpValidator>
+#include <QComboBox>
 
 
 struct Transaction {
@@ -35,6 +36,8 @@ private:
     QLineEdit* dataEdit;
     QLineEdit* descriptionEdit;
     QPushButton* ok;
+    QComboBox* type;
+
     bool Close = false;
 };
 

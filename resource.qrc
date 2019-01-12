@@ -5,5 +5,6 @@
         <file>red.jpg</file>
         <file>analysis.png</file>
         <file>report.png</file>
+        <file>transactions.png</file>
     </qresource>
 </RCC>

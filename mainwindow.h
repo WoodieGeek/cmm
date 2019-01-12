@@ -33,17 +33,17 @@ public:
     ~MainWindow();
 
 private:
-    void PrepareTable();
-    void CreateForm();
-    void AddTransactions(int type);
+    void PrepareTable(QStringList headers, size_t rows);
     void GetAllTransactions(QVector<QVector<QString>>& transactions);
+    void GetAllArrears(QVector<QVector<QString>>& arrears, QString type);
     qint64 Date2Utc(const QString& data);
 
 public slots:
     void ShowTransactions();
-    void IncomeTransactions();
-    void ExpenseTransactions();
     void CreateReport();
+    void AddTransactions();
+    void ShowDebtor();
+    void ShowCreditor();
 
 private:
     Ui::MainWindow *ui;

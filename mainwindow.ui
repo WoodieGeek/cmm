@@ -54,15 +54,16 @@
    <attribute name="toolBarBreak">
     <bool>true</bool>
    </attribute>
-   <addaction name="transactions"/>
-   <addaction name="expense"/>
-   <addaction name="income"/>
+   <addaction name="operations"/>
+   <addaction name="transaction"/>
+   <addaction name="creditor"/>
+   <addaction name="debtor"/>
    <addaction name="analysis"/>
    <addaction name="report"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="transactions">
+  <action name="operations">
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/safe.png</normaloff>:/safe.png</iconset>
@@ -71,22 +72,25 @@
     <string>Операции</string>
    </property>
   </action>
-  <action name="income">
+  <action name="debtor">
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/green.jpg</normaloff>:/green.jpg</iconset>
    </property>
    <property name="text">
-    <string>Доход</string>
+    <string>Нам должны</string>
    </property>
   </action>
-  <action name="expense">
+  <action name="creditor">
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/red.jpg</normaloff>:/red.jpg</iconset>
    </property>
    <property name="text">
-    <string>Расход</string>
+    <string>Мы должны</string>
+   </property>
+   <property name="toolTip">
+    <string>Мы должны</string>
    </property>
   </action>
   <action name="analysis">
@@ -105,6 +109,15 @@
    </property>
    <property name="text">
     <string>Отчёт</string>
+   </property>
+  </action>
+  <action name="transaction">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/transactions.png</normaloff>:/transactions.png</iconset>
+   </property>
+   <property name="text">
+    <string>Транзакция</string>
    </property>
   </action>
  </widget>

@@ -10,10 +10,11 @@ MainWindow::MainWindow(QWidget *parent) :
     Db.setDatabaseName(DataBaseName);
     if (!Db.open())
         qDebug() << "DataBase dont open";
-    connect(ui->transactions, SIGNAL(triggered()), this, SLOT(ShowTransactions()));
-    connect(ui->income, SIGNAL(triggered()), this, SLOT(IncomeTransactions()));
-    connect(ui->expense, SIGNAL(triggered()), this, SLOT(ExpenseTransactions()));
+    connect(ui->operations, SIGNAL(triggered()), this, SLOT(ShowTransactions()));
     connect(ui->report, SIGNAL(triggered()), this, SLOT(CreateReport()));
+    connect(ui->transaction, SIGNAL(triggered()), this, SLOT(AddTransactions()));
+    connect(ui->debtor, SIGNAL(triggered()), this, SLOT(ShowDebtor()));
+    connect(ui->creditor, SIGNAL(triggered()), this, SLOT(ShowCreditor()));
 }
 
 MainWindow::~MainWindow()
@@ -21,8 +22,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::PrepareTable() {
-    QStringList headers = {"ID", "Сумма", "Дата", "Описание"};
+void MainWindow::PrepareTable(QStringList headers, size_t rows) {
+    ui->table->clear();
+    ui->table->setRowCount(rows);
     ui->table->setColumnCount(headers.size());
     ui->table->setHorizontalHeaderLabels(headers);
     ui->table->verticalHeader()->setVisible(false);
@@ -30,10 +32,9 @@ void MainWindow::PrepareTable() {
 }
 
 void MainWindow::ShowTransactions() {
-    PrepareTable();
     QVector<QVector<QString>> result;
     GetAllTransactions(result);
-    ui->table->setRowCount(result.size());
+    PrepareTable({"ID", "Сумма", "Дата", "Описание"}, result.size());
     for (size_t i = 0; i < result.size(); i++) {
         for (size_t j = 0, jt = 0; j < result[i].size(); j++, jt++) {
             if (j == 2) { //if column is type of transactions
@@ -50,12 +51,9 @@ void MainWindow::ShowTransactions() {
 
 }
 
-void MainWindow::CreateForm() {
-}
 
-void MainWindow::AddTransactions(int type) {
+void MainWindow::AddTransactions() {
     Transaction transaction;
-    transaction.Type = type == 1 ? "+" : "-";
     TransactionForm* form = new TransactionForm(&transaction, this);
     form->GetForm()->exec();
     if (form->GetClose()) {
@@ -67,25 +65,24 @@ void MainWindow::AddTransactions(int type) {
     delete form;
 }
 
-void MainWindow::IncomeTransactions() {
-    this->AddTransactions(1);
-}
-
-void MainWindow::ExpenseTransactions() {
-    this->AddTransactions(0);
-}
-
 void MainWindow::CreateReport() {
     QLineSeries* seriesIncome = new QLineSeries();
     QLineSeries* seriesExpenses = new QLineSeries();
     QVector<QVector<QString>> result;
     GetAllTransactions(result);
+    QVector<QPair<int, int>> Incomes, Expanses;
     for (const auto& row : result) {
         if (row[2] == "+")
-            seriesIncome->append(Date2Utc(row[3]), row[1].toInt());
+            Incomes.push_back({Date2Utc(row[3]), row[1].toInt()});
         else
-            seriesExpenses->append(Date2Utc(row[3]), row[1].toInt());
+            Expanses.push_back({Date2Utc(row[3]), row[1].toInt()});
     }
+    std::sort(Incomes.begin(), Incomes.end());
+    std::sort(Expanses.begin(), Expanses.end());
+    for (const auto& point : Incomes)
+        seriesIncome->append(point.first, point.second);
+    for (const auto& point : Expanses)
+        seriesExpenses->append(point.first, point.second);
     seriesExpenses->setColor(Qt::red);
     seriesIncome->setColor(Qt::green);
     seriesExpenses->setName("Расходы");
@@ -116,8 +113,48 @@ void MainWindow::GetAllTransactions(QVector<QVector<QString>>& transactions) {
     }
 }
 
+
 qint64 MainWindow::Date2Utc(const QString& date) {
     QDateTime dateTime = QDateTime::fromString(date, "dd.MM.yyyy");
     const auto& date_ = dateTime.date();
     return  date_.day() + date_.month() * 100 + date_.year() * 10000;
 }
+
+void MainWindow::GetAllArrears(QVector<QVector<QString>>& arrears, QString type) {
+    QSqlQuery* query = new QSqlQuery(Db);
+    if (query->exec("SELECT id, value, object FROM arrears WHERE type == '" + type + "'")) {
+        while (query->next()) {
+            QVector<QString> row;
+            for (size_t i = 0; i < 4; i++)
+                row.push_back(query->value(i).toString());
+            arrears.push_back(std::move(row));
+        }
+    }
+}
+
+void MainWindow::ShowDebtor() {
+    QVector<QVector<QString>> result;
+    GetAllArrears(result, "+");
+    PrepareTable({"ID", "Сумма", "Должник"}, result.size());
+    for (size_t i = 0; i < result.size(); i++) {
+        for (size_t j = 0; j < result[i].size(); j++) {
+            ui->table->setItem(i, j, new QTableWidgetItem(result[i][j]));
+        }
+    }
+}
+
+void MainWindow::ShowCreditor() {
+    QVector<QVector<QString>> result;
+    GetAllArrears(result, "-");
+    PrepareTable({"ID", "Сумма", "Кредитор"}, result.size());
+    for (size_t i = 0; i < result.size(); i++) {
+        for (size_t j = 0; j < result[i].size(); j++) {
+            ui->table->setItem(i, j, new QTableWidgetItem(result[i][j]));
+        }
+    }
+}
+
+
+
+
+

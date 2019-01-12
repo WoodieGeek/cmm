@@ -9,10 +9,14 @@ TransactionForm::TransactionForm(Transaction* transaction, QWidget* parent) : Tr
     dataEdit = new QLineEdit(Form);
     dataEdit->setValidator(new QRegExpValidator(QRegExp("([0-9]{2})\\.([0-9]{2})\\.([0-9]{4})")));
     descriptionEdit = new QLineEdit(Form);
+    type = new QComboBox(Form);
+    type->addItem("Расход");
+    type->addItem("Доход");
     QFormLayout *formLayout = new QFormLayout();
     formLayout->addRow("Сумма", valueEdit);
     formLayout->addRow("Дата", dataEdit);
     formLayout->addRow("Описание", descriptionEdit);
+    formLayout->addRow("Тип", type);
     QVBoxLayout *hbox = new QVBoxLayout();
     ok = new QPushButton(Form);
     ok->setText("OK");
@@ -32,6 +36,7 @@ void TransactionForm::OkClicked() {
         Transaction_->Data = dataEdit->text();
         Transaction_->Value = valueEdit->text().toInt();
         Transaction_->Description = descriptionEdit->text();
+        Transaction_->Type = type->currentText() == "Доход" ? "+" : "-";
         Close = true;
     }
     Form->close();
